@@ -1,0 +1,7 @@
+complete_chore:
+  fields:
+    chore_id:
+      required: true
+      example: "3f2c..."
+      selector:
+        text:
