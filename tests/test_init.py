@@ -48,7 +48,7 @@ async def test_setup_creates_calendar_todo_and_sensors(hass: HomeAssistant, aioc
 
     aioclient_mock.put(f"{API_BASE}/lists/l1/items/i1", json={"success": True, "data": {}})
     await hass.services.async_call("todo", "update_item", {"item": "Milk", "status": "completed"}, target={"entity_id": groceries.entity_id}, blocking=True)
-    put = next(c for c in aioclient_mock.mock_calls if c[0] == "PUT")
+    put = next(c for c in aioclient_mock.mock_calls if str(c[0]).upper() == "PUT")
     assert put[2] == {"checked": True}
 
 

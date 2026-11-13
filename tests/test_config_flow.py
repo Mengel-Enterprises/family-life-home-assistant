@@ -27,6 +27,9 @@ async def _start(hass: HomeAssistant, aioclient_mock) -> dict:
 async def test_full_flow(hass: HomeAssistant, hass_client_no_auth, aioclient_mock) -> None:
     """The authorize URL carries S256 PKCE and our scopes; the verifier reaches the token call."""
     result = await _start(hass, aioclient_mock)
+    # Core's `auth` component serves /auth/external/callback in a real instance; register it here
+    # (hass.http exists once the flow has loaded the http dependency).
+    hass.http.register_view(config_entry_oauth2_flow.OAuth2AuthorizeCallbackView())
     assert result["type"] is FlowResultType.EXTERNAL_STEP
     url = urlparse(result["url"])
     q = parse_qs(url.query)
